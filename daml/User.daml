@@ -1,0 +1,35 @@
+module User where
+import Tweet
+
+template User with
+    username: Party
+    reviewers: [Party]
+  where
+    signatory username
+    observer reviewers
+
+    key username: Party
+    maintainer key
+
+    nonconsuming choice AddReviewer: ContractId User with
+        reviewer: Party
+      controller username
+      do
+        assertMsg "You cannot review yourself" (reviewer /= username)
+        assertMsg "You cannot follow have the same reviewer twice" (notElem reviewer reviewers)
+        archive self
+        create this with reviewers = reviewer :: reviewers
+    nonconsuming choice PublishTweet: ContractId TweetProposal with
+        content: Text
+      controller username
+      do
+        create TweetProposal with
+          signatories = [username]
+          tweet = Tweet with 
+            sender = username
+            content = content
+            reviewers = reviewers
+          remainingObservers = reviewers
+
+
+

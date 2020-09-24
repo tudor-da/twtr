@@ -1,0 +1,32 @@
+
+module Tweet where
+
+-- Federated Twitter, where each follower needs to sign new tweets published by a user
+-- Initially, we only care about new tweets (after the follower joined)
+
+template Tweet 
+  with
+    sender: Party
+    -- use Reviewers or smth instead
+    reviewers: [Party]
+    content: Text
+  where
+    signatory sender, reviewers
+
+template TweetProposal
+  with
+    signatories: [Party]
+    tweet: Tweet
+    remainingObservers: [Party]
+  where
+    signatory signatories
+    observer remainingObservers
+    choice TweetProposal_Sign: ContractId TweetProposal
+        with newSigner: Party
+      controller newSigner
+        do create this with 
+              remainingObservers = filter (/=newSigner) remainingObservers 
+              signatories = newSigner::signatories
+    controller tweet.sender can
+      Tweet_Release : ContractId Tweet
+        do create tweet
