@@ -30,6 +30,3 @@ template User with
             content = content
             reviewers = reviewers
           remainingObservers = reviewers
-
-
-

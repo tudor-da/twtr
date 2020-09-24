@@ -1,5 +1,5 @@
 sdk-version: 1.5.0
-name: federated-twitter
+name: sane-twitter
 version: 0.1.0
 source: daml
 parties:
@@ -12,5 +12,5 @@ dependencies:
 - daml-trigger
 sandbox-options:
 - --wall-clock-time
-- --ledgerid=twitter-sandbox
+- --ledgerid=sane-twitter-sandbox
 start-navigator: false

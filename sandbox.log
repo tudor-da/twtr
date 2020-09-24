@@ -1,0 +1,35 @@
+10:38:13.733 [sandbox-akka.actor.default-dispatcher-4] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started 
+10:38:20.451 [scala-execution-context-global-83] ERROR com.daml.resources.ProgramResource - Shutting down because of an initialization error. 
+com.daml.platform.apiserver.GrpcServer$UnableToBind: The API server was unable to bind to port 6865. Terminate the process occupying the port, or choose a different one.
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:469)
+	at java.base/sun.nio.ch.Net.bind(Net.java:458)
+	at java.base/sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:220)
+	at io.netty.channel.socket.nio.NioServerSocketChannel.doBind(NioServerSocketChannel.java:134)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.bind(AbstractChannel.java:550)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.bind(DefaultChannelPipeline.java:1334)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeBind(AbstractChannelHandlerContext.java:506)
+	at io.netty.channel.AbstractChannelHandlerContext.bind(AbstractChannelHandlerContext.java:491)
+	at io.netty.channel.DefaultChannelPipeline.bind(DefaultChannelPipeline.java:973)
+	at io.netty.channel.AbstractChannel.bind(AbstractChannel.java:248)
+	at io.netty.bootstrap.AbstractBootstrap$2.run(AbstractBootstrap.java:356)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:164)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:472)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+10:52:39.551 [sandbox-akka.actor.default-dispatcher-4] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started 
+10:52:46.224 [pool-1-thread-4] INFO  c.d.p.apiserver.LedgerApiServer - Listening on localhost:6865 over plain text. 
+10:52:46.237 [pool-1-thread-2] INFO  com.daml.platform.sandboxnext.Runner - Initialized sandbox version 1.5.0 with ledger-id = sane-twitter-sandbox, port = 6865, dar file = List(.daml/dist/sane-twitter-0.1.0.dar), time mode = wall-clock time, ledger = in-memory, auth-service = AuthServiceWildcard$, contract ids seeding = strong 
+11:23:04.214 [sandbox-akka.actor.default-dispatcher-4] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started 
+11:23:10.784 [pool-1-thread-3] INFO  c.d.p.apiserver.LedgerApiServer - Listening on localhost:6865 over plain text. 
+11:23:10.800 [pool-1-thread-4] INFO  com.daml.platform.sandboxnext.Runner - Initialized sandbox version 1.5.0 with ledger-id = sane-twitter-sandbox, port = 6865, dar file = List(.daml/dist/sane-twitter-0.1.0.dar), time mode = wall-clock time, ledger = in-memory, auth-service = AuthServiceWildcard$, contract ids seeding = strong 
+11:25:42.442 [sandbox-akka.actor.default-dispatcher-4] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started 
+11:25:48.331 [pool-1-thread-2] INFO  c.d.p.apiserver.LedgerApiServer - Listening on localhost:6865 over plain text. 
+11:25:48.345 [pool-1-thread-4] INFO  com.daml.platform.sandboxnext.Runner - Initialized sandbox version 1.5.0 with ledger-id = sane-twitter-sandbox, port = 6865, dar file = List(.daml/dist/sane-twitter-0.1.0.dar), time mode = wall-clock time, ledger = in-memory, auth-service = AuthServiceWildcard$, contract ids seeding = strong 
+12:55:52.850 [sandbox-akka.actor.default-dispatcher-4] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started 
+12:56:01.050 [pool-1-thread-1] INFO  c.d.p.apiserver.LedgerApiServer - Listening on localhost:6865 over plain text. 
+12:56:01.067 [pool-1-thread-2] INFO  com.daml.platform.sandboxnext.Runner - Initialized sandbox version 1.5.0 with ledger-id = sane-twitter-sandbox, port = 6865, dar file = List(.daml/dist/sane-twitter-0.1.0.dar), time mode = wall-clock time, ledger = in-memory, auth-service = AuthServiceWildcard$, contract ids seeding = strong 
