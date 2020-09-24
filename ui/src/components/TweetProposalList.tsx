@@ -2,12 +2,12 @@ import React from 'react'
 import { Button, Divider, List, ListItem } from 'semantic-ui-react';
 import { Tweet } from '@daml.js/sane-twitter'
 import { useStreamQuery } from '@daml/react';
-import { Bool, Party } from '@daml/types';
+import { Party, ContractId } from '@daml/types';
 import { TweetProposal } from '@daml.js/sane-twitter/lib/Tweet';
 
 type Props = {
   newSigner: Party | undefined;
-  onNewSigner: (newSigner: Party, tweetProposal: TweetProposal) => Promise<Boolean>;
+  onNewSigner: (newSigner: Party, tweetProposal: ContractId<TweetProposal>) => Promise<Boolean>;
 }
 
 /**
@@ -16,7 +16,7 @@ type Props = {
 const TweetProposalList: React.FC<Props> = ({newSigner, onNewSigner}) => {
   const messagesResult = useStreamQuery(Tweet.TweetProposal);
 
-  const sign = async (tweetProposal: TweetProposal, event?: React.FormEvent) => {
+  const sign = async (tweetProposal: ContractId<TweetProposal>, event?: React.FormEvent) => {
     if (event) {
       event.preventDefault();
     }
@@ -39,7 +39,7 @@ const TweetProposalList: React.FC<Props> = ({newSigner, onNewSigner}) => {
             <Button
               type='submit'
               className='test-select-follow-button'
-              onClick={(event) => sign(tweetProposal.payload, event)} >
+              onClick={(event) => sign(tweetProposal.contractId, event)} >
               Approve tweet
             </Button>
               <Divider/> 

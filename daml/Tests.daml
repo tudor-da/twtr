@@ -17,9 +17,7 @@ users_test = scenario do
 
   t1 <- submit alice (exercise newAlice (PublishTweet "hi"))
 
-  t2 <- submit bob (exercise t1 (TweetProposal_Sign bob))
+  Left t2 <- submit bob (exercise t1 (TweetProposal_Sign bob))
   submitMustFail alice (exercise t2 Tweet_Release)
 
-  t3 <- submit charlie (exercise t2 (TweetProposal_Sign charlie))
-
-  submit alice (exercise t3 Tweet_Release)
+  submit charlie (exercise t2 (TweetProposal_Sign charlie))

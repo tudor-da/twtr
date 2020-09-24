@@ -1,13 +1,16 @@
 
 module Tweet where
 
+import DA.List
+-- import DA.Next.Set (Set)
+-- import DA.Next.Map (MapKey)
+
 -- Federated Twitter, where each follower needs to sign new tweets published by a user
 -- Initially, we only care about new tweets (after the follower joined)
 
 template Tweet 
   with
     sender: Party
-    -- use Reviewers or smth instead
     reviewers: [Party]
     content: Text
   where
@@ -21,12 +24,19 @@ template TweetProposal
   where
     signatory signatories
     observer remainingObservers
-    choice TweetProposal_Sign: ContractId TweetProposal
+    choice TweetProposal_Sign: Either (ContractId TweetProposal) (ContractId Tweet)
         with newSigner: Party
       controller newSigner
-        do create this with 
+        do
+        -- TODO: Use Set[Party] for signatories
+        assertMsg "Already signed" (notElem newSigner signatories)
+        let sortedSignatories = sort (newSigner::signatories)
+        let sortedReviewers = sort (tweet.sender::tweet.reviewers)
+        if(sortedReviewers == sortedSignatories) then
+          fmap (Right) (create tweet)
+        else fmap (Left) (create this with 
               remainingObservers = filter (/=newSigner) remainingObservers 
-              signatories = newSigner::signatories
+              signatories = newSigner::signatories)
     controller tweet.sender can
       Tweet_Release : ContractId Tweet
         do create tweet

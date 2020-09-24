@@ -16,13 +16,14 @@ template User with
       controller username
       do
         assertMsg "You cannot review yourself" (reviewer /= username)
-        assertMsg "You cannot follow have the same reviewer twice" (notElem reviewer reviewers)
+        assertMsg "You cannot have the same reviewer twice" (notElem reviewer reviewers)
         archive self
         create this with reviewers = reviewer :: reviewers
     nonconsuming choice PublishTweet: ContractId TweetProposal with
         content: Text
       controller username
       do
+        assertMsg "You need to have at least one reviewer" (not (null reviewers))
         create TweetProposal with
           signatories = [username]
           tweet = Tweet with 

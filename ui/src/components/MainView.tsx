@@ -3,12 +3,13 @@
 
 import React, { useMemo } from 'react';
 import { Container, Grid, Header, Icon, Segment, Divider } from 'semantic-ui-react';
-import { Party } from '@daml/types';
+import { Party, ContractId } from '@daml/types';
 import { Tweet, User } from '@daml.js/sane-twitter';
 import { useParty, useLedger, useStreamFetchByKey, useStreamQuery } from '@daml/react';
 import PartyListEdit from './PartyListEdit';
 import TweetEdit from './TweetEdit'
 import TweetProposalList from './TweetProposalList'
+import TweetList from './TweetList'
 import { TweetProposal, TweetProposal_Sign } from '@daml.js/sane-twitter/lib/Tweet';
 
 // USERS_BEGIN
@@ -16,16 +17,8 @@ const MainView: React.FC = () => {
   const username = useParty();
   const myUserResult = useStreamFetchByKey(User.User, () => username, [username]);
   const myUser = myUserResult.contract?.payload;
-  const allUsers = useStreamQuery(User.User).contracts;
+  const allTweets = useStreamQuery(Tweet.Tweet).contracts;
 // USERS_END
-
-  // Sorted list of users that are reviewers of the current user
-  const reviewers = useMemo(() =>
-    allUsers
-    .map(user => user.payload)
-    .filter(user => user.username !== username)
-    .sort((x, y) => x.username.localeCompare(y.username)),
-    [allUsers, username]);
 
   // FOLLOW_BEGIN
   const ledger = useLedger();
@@ -40,9 +33,9 @@ const MainView: React.FC = () => {
     }
   }
 
-  const reviewerSign = async (newSigner: Party, tweetProposal: TweetProposal): Promise<boolean> => {
+  const reviewerSign = async (newSigner: Party, tweetProposal: ContractId<TweetProposal>): Promise<boolean> => {
     try {
-      await ledger.exerciseByKey(Tweet.TweetProposal.TweetProposal_Sign, tweetProposal, {newSigner});
+      await ledger.exercise(Tweet.TweetProposal.TweetProposal_Sign, tweetProposal, {newSigner});
       return true;
     } catch (error) {
       alert("Unknown error while trying to sign proposal:\n" + JSON.stringify(error));
@@ -83,6 +76,15 @@ const MainView: React.FC = () => {
                 </Header.Content>
               </Header>
               <TweetEdit />
+            </Segment>
+            <Segment>
+              <Header as='h2'>
+                <Header.Content>
+                  Tweets
+                  <Header.Subheader>Tweets already published and approved by all participants</Header.Subheader>
+                </Header.Content>
+              </Header>
+              <TweetList/>
             </Segment>
             <Segment>
               <Header as='h3'>
