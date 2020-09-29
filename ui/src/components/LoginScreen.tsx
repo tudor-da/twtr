@@ -8,6 +8,8 @@ import Ledger from '@daml/ledger';
 import { User } from '@daml.js/sane-twitter';
 import { DeploymentMode, deploymentMode, ledgerId, httpBaseUrl} from '../config';
 import { useEffect } from 'react';
+import pkgcd314fc519b9e3528f46c92658d77c63f80d1a209f67319f2ece231cf38c79df from '@daml.js/cd314fc519b9e3528f46c92658d77c63f80d1a209f67319f2ece231cf38c79df'
+
 
 type Props = {
   onLogin: (credentials: Credentials) => void;
@@ -24,7 +26,7 @@ const LoginScreen: React.FC<Props> = ({onLogin}) => {
       const ledger = new Ledger({token: credentials.token, httpBaseUrl});
       let userContract = await ledger.fetchByKey(User.User, credentials.party);
       if (userContract === null) {
-        const user = {username: credentials.party, reviewers: []};
+        const user = {username: credentials.party, reviewers: {textMap: {}}};
         userContract = await ledger.create(User.User, user);
       }
       onLogin(credentials);

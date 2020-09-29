@@ -1183,8 +1183,8 @@
 "@daml.js/sane-twitter@file:../daml.js/sane-twitter-0.1.0":
   version "1.5.0"
   dependencies:
-    "@daml.js/40f452260bef3f29dede136108fc08a88d5a5250310281067087da6f0baddff7" "file:../../../Library/Caches/Yarn/v6/npm-@daml-js-sane-twitter-1.5.0-02bc129e-f19b-403d-b8ca-b7a095d13a0c-1600958825891/node_modules/@daml.js/40f452260bef3f29dede136108fc08a88d5a5250310281067087da6f0baddff7"
-    "@daml.js/d14e08374fc7197d6a0de468c968ae8ba3aadbf9315476fd39071831f5923662" "file:../../../Library/Caches/Yarn/v6/npm-@daml-js-sane-twitter-1.5.0-02bc129e-f19b-403d-b8ca-b7a095d13a0c-1600958825891/node_modules/@daml.js/d14e08374fc7197d6a0de468c968ae8ba3aadbf9315476fd39071831f5923662"
+    "@daml.js/40f452260bef3f29dede136108fc08a88d5a5250310281067087da6f0baddff7" "file:../../../Library/Caches/Yarn/v6/npm-@daml-js-sane-twitter-1.5.0-2566dc4f-f39f-41d3-a3f5-308051cc358b-1601018625660/node_modules/@daml.js/40f452260bef3f29dede136108fc08a88d5a5250310281067087da6f0baddff7"
+    "@daml.js/d14e08374fc7197d6a0de468c968ae8ba3aadbf9315476fd39071831f5923662" "file:../../../Library/Caches/Yarn/v6/npm-@daml-js-sane-twitter-1.5.0-2566dc4f-f39f-41d3-a3f5-308051cc358b-1601018625660/node_modules/@daml.js/d14e08374fc7197d6a0de468c968ae8ba3aadbf9315476fd39071831f5923662"
     "@daml/ledger" "1.5.0"
     "@daml/types" "1.5.0"
     "@mojotech/json-type-validation" "^3.1.0"

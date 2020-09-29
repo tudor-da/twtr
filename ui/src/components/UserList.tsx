@@ -32,7 +32,7 @@ const UserList: React.FC<Props> = ({users, onFollow}) => {
             <List.Header className='test-select-user-in-network'>{user.username}</List.Header>
           </List.Content>
           <List.List>
-            {[...user.reviewers].sort((x, y) => x.localeCompare(y)).map(userToFollow =>
+            {[...Object.keys(user.reviewers.textMap)].sort((x, y) => x.localeCompare(y)).map(userToFollow =>
               <List.Item key={userToFollow}>
                 <List.Content floated='right'>
                   <Icon

@@ -4,9 +4,11 @@
 import React from 'react'
 import { Form, List, Button } from 'semantic-ui-react';
 import { Party } from '@daml/types';
+import pkgcd314fc519b9e3528f46c92658d77c63f80d1a209f67319f2ece231cf38c79df from '@daml.js/cd314fc519b9e3528f46c92658d77c63f80d1a209f67319f2ece231cf38c79df'
+
 
 type Props = {
-  parties: Party[];
+  parties: pkgcd314fc519b9e3528f46c92658d77c63f80d1a209f67319f2ece231cf38c79df.DA.Next.Set.Set<Party>;
   onAddParty: (party: Party) => Promise<boolean>;
 }
 
@@ -31,7 +33,7 @@ const PartyListEdit: React.FC<Props> = ({parties, onAddParty}) => {
 
   return (
     <List relaxed>
-      {[...parties].sort((x, y) => x.localeCompare(y)).map((party) =>
+      {[...Object.keys(parties.textMap)].sort((x, y) => x.localeCompare(y)).map((party) =>
         <List.Item
           key={party}
         >
@@ -56,7 +58,7 @@ const PartyListEdit: React.FC<Props> = ({parties, onAddParty}) => {
         />
         <Button
           type='submit'
-          className='test-select-follow-button'>
+          className='test-select-'>
           Add reviewer
         </Button>
       </Form>

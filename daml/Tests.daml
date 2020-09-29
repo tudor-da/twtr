@@ -1,16 +1,17 @@
 module Tests where
 import Tweet
 import User
-
-users_test = scenario do
+ 
+import DA.Next.Set as Set
+users_testa = scenario do
   alice <- getParty "alice"
-  aliceU <- submit alice do create User with username = alice, reviewers = []
+  aliceU <- submit alice do create User with username = alice, reviewers = Set.empty
   
   bob <- getParty "bob"
-  bobU <- submit bob do create User with username = bob, reviewers = []
+  bobU <- submit bob do create User with username = bob, reviewers = Set.empty
 
   charlie <- getParty "charlie"
-  charlieU <- submit charlie do create User with username = charlie, reviewers = []
+  charlieU <- submit charlie do create User with username = charlie, reviewers = Set.empty
 
   newAliceU <- submit alice (exercise aliceU (AddReviewer bob))
   newAlice <- submit alice (exercise newAliceU (AddReviewer charlie))

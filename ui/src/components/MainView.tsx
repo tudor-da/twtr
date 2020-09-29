@@ -63,7 +63,7 @@ const MainView: React.FC = () => {
               </Header>
               <Divider />
               <PartyListEdit
-                parties={myUser?.reviewers ?? []}
+                parties={myUser?.reviewers ?? {textMap: {}}}
                 onAddParty={addReviewer}
               />
             </Segment>

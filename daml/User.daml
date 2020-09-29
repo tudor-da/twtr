@@ -1,9 +1,11 @@
 module User where
 import Tweet
 
+import DA.Next.Set as Set
+
 template User with
     username: Party
-    reviewers: [Party]
+    reviewers: Set Party
   where
     signatory username
     observer reviewers
@@ -16,16 +18,15 @@ template User with
       controller username
       do
         assertMsg "You cannot review yourself" (reviewer /= username)
-        assertMsg "You cannot have the same reviewer twice" (notElem reviewer reviewers)
         archive self
-        create this with reviewers = reviewer :: reviewers
+        create this with reviewers = reviewer `insert` reviewers
     nonconsuming choice PublishTweet: ContractId TweetProposal with
         content: Text
       controller username
       do
-        assertMsg "You need to have at least one reviewer" (not (null reviewers))
+        assertMsg "You need to have at least one reviewer" (reviewers /= Set.empty)
         create TweetProposal with
-          signatories = [username]
+          signatories = Set.fromList [username]
           tweet = Tweet with 
             sender = username
             content = content

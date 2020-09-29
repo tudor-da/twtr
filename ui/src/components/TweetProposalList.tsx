@@ -28,14 +28,14 @@ const TweetProposalList: React.FC<Props> = ({newSigner, onNewSigner}) => {
     <List relaxed>
       {messagesResult.contracts.map(tweetProposal => {
         const {signatories, tweet, remainingObservers} = tweetProposal.payload;
-        const {sender, reviewers, content} = tweet
+        const {sender, content} = tweet
         return (
           <ListItem
             className='test-select-message-item'
             key={tweetProposal.contractId}>
             Tweet proposal by <strong> {sender}: </strong> "{content}" <br/>
-              Current signatories: <strong>{signatories} </strong> <br/>
-              Remaining reviewers: <strong>{remainingObservers}</strong> <br/>
+              Current signatories: <strong>{Object.keys(signatories.textMap)} </strong> <br/>
+              Remaining reviewers: <strong>{Object.keys(remainingObservers.textMap)}</strong> <br/>
             <Button
               type='submit'
               className='test-select-follow-button'
