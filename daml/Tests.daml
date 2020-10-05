@@ -3,7 +3,9 @@ import Tweet
 import User
  
 import DA.Next.Set as Set
-users_testa = scenario do
+
+users_test_single_delete = scenario do
+  -- create users
   alice <- getParty "alice"
   aliceU <- submit alice do create User with username = alice, reviewers = Set.empty
   
@@ -13,12 +15,18 @@ users_testa = scenario do
   charlie <- getParty "charlie"
   charlieU <- submit charlie do create User with username = charlie, reviewers = Set.empty
 
+  -- Update Alice's contract with her reviewers
   newAliceU <- submit alice (exercise aliceU (AddReviewer bob))
   newAlice <- submit alice (exercise newAliceU (AddReviewer charlie))
 
+  -- Alice publishes her tweet for review
   t1 <- submit alice (exercise newAlice (PublishTweet "hi"))
 
   Left t2 <- submit bob (exercise t1 (TweetProposal_Sign bob))
-  submitMustFail alice (exercise t2 Tweet_Release)
 
-  submit charlie (exercise t2 (TweetProposal_Sign charlie))
+  -- Charlie is the last needed signer so he also releases the tweet
+  Right (tweetCid: ContractId Tweet, deletionProposal) <- submit charlie (exercise t2 (TweetProposal_Sign charlie))
+
+  submit charlie (exercise deletionProposal (TweetDeleteProposal_Sign charlie))
+
+  submitMustFail bob (fetch tweetCid)

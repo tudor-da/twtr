@@ -1,0 +1,22 @@
+module Triggers where
+
+import Daml.Trigger
+import DA.Next.Map (Map)
+import Tweet
+import DA.Next.Set as Set
+
+autoApproveRule : Party -> ACS -> Time -> Map CommandId [Command] -> () -> TriggerA ()
+autoApproveRule party acs _time commandsInFlight () = do
+  let tweetProposals : [(ContractId TweetProposal, TweetProposal)] = getContracts acs
+  let toBeApproved = Prelude.filter (\(_, tp) -> not $ party `member` tp.signatories) tweetProposals 
+  forA toBeApproved $ \(cid, _) -> emitCommands [exerciseCmd cid (TweetProposal_Sign party)] [toAnyContractId cid]
+  pure ()
+
+autoApproveTrigger : Trigger ()
+autoApproveTrigger = Trigger {
+  initialize = const (),
+  updateState = \_acs _message () -> (),
+  rule = autoApproveRule,
+  registeredTemplates = AllInDar,
+  heartbeat = None
+}

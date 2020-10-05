@@ -3,7 +3,7 @@ module Tweet where
 
 import DA.List as List
 import DA.Next.Set as Set
--- Federated Twitter, where each follower needs to sign new tweets published by a user
+-- Curated Twitter, where each reviewer needs to sign new tweets published by a user
 -- Initially, we only care about new tweets (after the follower joined)
 
 template Tweet 
@@ -22,17 +22,38 @@ template TweetProposal
   where
     signatory signatories
     observer remainingObservers
-    choice TweetProposal_Sign: Either (ContractId TweetProposal) (ContractId Tweet)
+    choice TweetProposal_Sign: Either (ContractId TweetProposal) ((ContractId Tweet, ContractId TweetDeleteProposal))
         with newSigner: Party
       controller newSigner
         do
         let sortedSignatories = sort (newSigner :: ($) toList signatories)
         let sortedReviewers = sort (tweet.sender :: ($) toList tweet.reviewers)
-        if(sortedReviewers == sortedSignatories) then
-          fmap (Right) (create tweet)
+        if(sortedReviewers == sortedSignatories) then do
+          tweetCid <- create tweet
+          tweetDeleteProposalCid <- create TweetDeleteProposal with
+            currentSignatories = newSigner `insert` signatories
+            tweetCid = tweetCid
+            observers = newSigner `insert` signatories
+          return $ Right (tweetCid, tweetDeleteProposalCid)
         else fmap (Left) (create this with 
               remainingObservers = Set.filter (/=newSigner) remainingObservers 
               signatories = insert newSigner signatories)
-    controller tweet.sender can
-      Tweet_Release : ContractId Tweet
-        do create tweet
+  
+template TweetDeleteProposal
+  with
+    currentSignatories: Set Party
+    tweetCid: ContractId Tweet
+    observers: Set Party
+  where
+    signatory currentSignatories
+    observer observers
+    choice TweetDeleteProposal_Sign: Either (ContractId TweetDeleteProposal) ()
+        with newSigner: Party
+      controller newSigner 
+        do 
+        let allSignatories = newSigner `insert` currentSignatories
+        tweet <- fetch tweetCid
+        if(allSignatories == (Set.fromList(signatory tweet))) then
+          fmap Right $ archive tweetCid
+        else 
+          fmap Left $ create this with currentSignatories = allSignatories

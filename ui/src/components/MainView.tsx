@@ -17,7 +17,7 @@ const MainView: React.FC = () => {
   const username = useParty();
   const myUserResult = useStreamFetchByKey(User.User, () => username, [username]);
   const myUser = myUserResult.contract?.payload;
-  const allTweets = useStreamQuery(Tweet.Tweet).contracts;
+  const allDeleteProposals = useStreamQuery(Tweet.TweetDeleteProposal).contracts;
 // USERS_END
 
   // FOLLOW_BEGIN
@@ -37,6 +37,22 @@ const MainView: React.FC = () => {
     try {
       await ledger.exercise(Tweet.TweetProposal.TweetProposal_Sign, tweetProposal, {newSigner});
       return true;
+    } catch (error) {
+      alert("Unknown error while trying to sign proposal:\n" + JSON.stringify(error));
+      return false;
+    }
+  }
+
+  const requestDeletion = async (requester: Party, tweetCid: ContractId<Tweet.Tweet>): Promise<boolean> => {
+    try {
+      let deletionCid = allDeleteProposals.find(prop => prop.payload.tweetCid == tweetCid)?.contractId
+      if(deletionCid === undefined) {
+        alert("Deletion contract id is undefined");
+        return false;
+      } else {
+        await ledger.exercise(Tweet.TweetDeleteProposal.TweetDeleteProposal_Sign, deletionCid, {newSigner: requester})
+        return true;
+      }
     } catch (error) {
       alert("Unknown error while trying to sign proposal:\n" + JSON.stringify(error));
       return false;
@@ -84,7 +100,10 @@ const MainView: React.FC = () => {
                   <Header.Subheader>Tweets already published and approved by all participants</Header.Subheader>
                 </Header.Content>
               </Header>
-              <TweetList/>
+              <TweetList
+               deletionRequester = {username}
+               deleteOp = {requestDeletion}
+              />
             </Segment>
             <Segment>
               <Header as='h3'>

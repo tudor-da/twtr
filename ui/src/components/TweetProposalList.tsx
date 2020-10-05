@@ -34,8 +34,8 @@ const TweetProposalList: React.FC<Props> = ({newSigner, onNewSigner}) => {
             className='test-select-message-item'
             key={tweetProposal.contractId}>
             Tweet proposal by <strong> {sender}: </strong> "{content}" <br/>
-              Current signatories: <strong>{Object.keys(signatories.textMap)} </strong> <br/>
-              Remaining reviewers: <strong>{Object.keys(remainingObservers.textMap)}</strong> <br/>
+              Current signatories: <strong>{JSON.stringify(Object.keys(signatories.textMap))} </strong> <br/>
+              Remaining reviewers: <strong>{JSON.stringify(Object.keys(remainingObservers.textMap))}</strong> <br/>
             <Button
               type='submit'
               className='test-select-follow-button'
